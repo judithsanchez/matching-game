@@ -89,5 +89,7 @@ const verbEncender = new Verb({
     verbEncenderImperfect,
     verbEncenderFutureSimple,
   },
+  verbIllustration:
+    "https://bocaditosespanol.com/wp-content/uploads/2023/01/verbs-encender.svg",
   sentences: ["encender la luz", "no enciendas las luz"],
 });
