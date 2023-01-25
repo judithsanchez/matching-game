@@ -5,11 +5,14 @@ class Verb {
     isTransitive,
     isRegular,
     isStemChanging,
+    isReflexive,
     hasIrregularSpelling,
     verbIllustration,
     presentParticiple,
     pastParticiple,
     conjugations,
+    sentences,
+    associatedVocabulary,
   }) {
     this.verbSpanish = verbSpanish;
     this.verbEnglish = verbEnglish;
@@ -20,8 +23,10 @@ class Verb {
     this.stem = {
       stem: this.get_stem(this.verbSpanish),
       isStemChanging: isStemChanging,
-      hasIrregularSpelling: hasIrregularSpelling,
     };
+
+    (this.hasIrregularSpelling = hasIrregularSpelling),
+      (this.isReflexive = isReflexive);
 
     this.ending = this.get_ending(this.verbSpanish);
 
@@ -31,6 +36,11 @@ class Verb {
     this.pastParticiple = pastParticiple;
 
     this.conjugations = conjugations;
+
+    this.sentences = sentences;
+
+    this.associatedVocabulary = associatedVocabulary;
+    // {word: "la luz", url: "www.sdasdas.com"}
   }
 
   get_stem(string) {

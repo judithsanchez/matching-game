@@ -11,6 +11,7 @@ let verbSerPresentSimple = createVerbConjugations(
     ["nosotros", "somos"],
     ["vosotras", "sois"],
     ["vosotros", "sois"],
+    ["ustedes", "son"],
     ["éllas", "son"],
     ["éllos", "son"],
   ]
@@ -26,6 +27,7 @@ let verbSerPreterite = createVerbConjugations("indicative", "present simple", [
   ["nosotros", "fuimos"],
   ["vosotras", "fuisteis"],
   ["vosotros", "fuisteis"],
+  ["ustedes", "fueron"],
   ["éllas", "fueron"],
   ["éllos", "fueron"],
 ]);
@@ -40,6 +42,7 @@ let verbSerImperfect = createVerbConjugations("indicative", "present simple", [
   ["nosotros", "éramos"],
   ["vosotras", "érais"],
   ["vosotros", "érais"],
+  ["ustedes", "eran"],
   ["éllas", "eran"],
   ["éllos", "eran"],
 ]);
@@ -57,6 +60,7 @@ let verbSerFutureSimple = createVerbConjugations(
     ["nosotros", "seremos"],
     ["vosotras", "sereis"],
     ["vosotros", "sereis"],
+    ["ustedes", "serán"],
     ["éllas", "serán"],
     ["éllos", "serán"],
   ]
@@ -69,6 +73,7 @@ const verbSer = new Verb({
   isRegular: false,
   isStemChanging: false,
   hasIrregularSpelling: true,
+  isReflexive: false,
   presentParticiple: "siendo",
   pastParticiple: "sido",
   conjugations: {
@@ -77,4 +82,5 @@ const verbSer = new Verb({
     verbSerImperfect,
     verbSerFutureSimple,
   },
+  sentences: ["yo soy médico", "ser o no ser, ese es el dilema"],
 });
