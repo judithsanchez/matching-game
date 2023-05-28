@@ -1,92 +1,78 @@
-const catData = [];
+const gameList = [];
 let newGame;
 
-async function getCatData() {
-  const response = await fetch(
-    'https://api.thecatapi.com/v1/images/search?limit=10&mime_types=gif'
-  );
+async function getMatchingGameData(url) {
+  const response = await fetch(url);
   const data = await response.json();
   for (let i = 0; i < data.length; i += 1) {
-    catData.push(data[i]);
+    gameList.push(data[i]);
   }
 }
 
-let firstCardData;
-let firstCardId;
-let secondCardData;
-let secondCardId;
+let firstCard = null;
+let secondCard = null;
+let firstCardClicked = null;
+let secondCardClicked = null;
 
 function startGame() {
-  newGame = new MatchingGame(catData);
+  newGame = new MatchingGame(gameList);
 
   const container = document.querySelector('#gameBoard');
 
-  newGame.gameBoard.forEach((card) => {
+  newGame.board.forEach((card, index) => {
     const cardDiv = document.createElement('div');
     cardDiv.setAttribute('class', 'cards');
-    cardDiv.setAttribute('id', card.dataindex);
-    cardDiv.setAttribute(
-      'onclick',
-      `handleCardClick("${card.dataindex}", "${card.id}")`
-    );
-    cardDiv.setAttribute('dataindex', card.id);
+    cardDiv.setAttribute('id', `card${index}`);
+    cardDiv.setAttribute('onclick', `handleCardClick(${index})`);
     container.appendChild(cardDiv);
   });
 }
 
-function handleCardClick(dataindex, id) {
-  if (firstCardData === undefined && firstCardId === undefined) {
-    firstCardData = dataindex;
-    firstCardId = id;
-    newGame.getCardId(firstCardId);
-    const firstCard = document.getElementById(dataindex);
-    firstCard.style.backgroundImage = `url(${
-      newGame.gameBoard.find((card) => card.id === firstCardId).url
-    })`;
+function resetCard(card) {
+  card.style.backgroundImage = '';
+}
+
+function disableCard(card) {
+  card.style.cursor = 'auto';
+  card.onclick = null;
+}
+
+function resetCards() {
+  setTimeout(() => {
+    firstCard = null;
+    secondCard = null;
+    firstCardClicked = null;
+    secondCardClicked = null;
+  }, 1600);
+}
+
+function handleCardClick(id) {
+  const cardClicked = document.querySelector(`#card${id}`);
+
+  if (firstCard === null && secondCard === null) {
+    firstCard = id;
+    firstCardClicked = cardClicked;
+    firstCardClicked.style.backgroundImage = `url(${newGame.board[firstCard].url})`;
     return;
   }
 
-  secondCardData = dataindex;
-  secondCardId = id;
-  newGame.getCardId(secondCardId);
-  const secondCard = document.getElementById(dataindex);
-  secondCard.style.backgroundImage = `url(${
-    newGame.gameBoard.find((card) => card.id === secondCardId).url
-  })`;
+  if (firstCard !== null && secondCard === null && firstCard !== id) {
+    secondCard = id;
+    secondCardClicked = cardClicked;
+    secondCardClicked.style.backgroundImage = `url(${newGame.board[secondCard].url})`;
 
-  if (newGame.checkMatch(newGame.firstCard, newGame.secondCard)) {
-    const cards = document.querySelectorAll(
-      `[dataindex="${newGame.foundElements[newGame.foundElements.length - 1]}"]`
-    );
-
-    cards.forEach((card) => {
-      card.style.cursor = 'auto';
-      card.removeAttribute('onclick');
-    });
-
-    firstCardData = undefined;
-    firstCardId = undefined;
-    secondCardData = undefined;
-    secondCardId = undefined;
-  } else {
-    const gameBoard = document.querySelector('#gameBoard');
-    gameBoard.classList.add('no-click');
-
-    setTimeout(() => {
-      const firstCard = document.getElementById(firstCardData);
-      const secondCard = document.getElementById(secondCardData);
-
-      if (firstCard.style.backgroundImage && secondCard.style.backgroundImage) {
-        firstCard.style.backgroundImage = '';
-        secondCard.style.backgroundImage = '';
-      }
-
-      firstCardData = undefined;
-      firstCardId = undefined;
-      secondCardData = undefined;
-      secondCardId = undefined;
-
-      gameBoard.classList.remove('no-click');
-    }, 1500);
+    if (
+      !newGame.checkMatch(newGame.board[firstCard], newGame.board[secondCard])
+    ) {
+      setTimeout(() => {
+        resetCard(firstCardClicked);
+        resetCard(secondCardClicked);
+      }, 1500);
+    } else {
+      disableCard(firstCardClicked);
+      disableCard(secondCardClicked);
+    }
   }
+
+  resetCards();
 }
