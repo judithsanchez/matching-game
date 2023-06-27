@@ -1,6 +1,8 @@
 # Matching Game Implementation
 
-[🔗 Live preview](https://judithsanchez.github.io/matching-game/)
+[🎥 Preview](https://www.loom.com/share/ac321a1230ea4f0b830c889f89704945?sid=c4834e01-2e5f-427c-a3bd-b201678629be)
+
+[🚀 Live](https://judithsanchez.github.io/matching-game/)
 
 This repository contains the implementation of a matching/memory game using JavaScript, CSS3, and HTML5. The game's objective is to find pairs of identical elements from a list of duplicated items. The implementation includes async/await for handling API requests.
 
